@@ -1,2 +1,2 @@
-export {};
-//# sourceMappingURL=index.js.map
+import { initApp } from './ui/renderApp.js';
+initApp();

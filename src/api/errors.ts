@@ -20,14 +20,24 @@ export function classifyError(error: unknown): ClassifiedError {
     if (error.name === 'AbortError') {
       return { type: 'abort', message: error.message };
     } else if (error.name === 'TimeoutError') {
-      return { type: 'timeout', message: error.message };
+      return {
+        type: 'timeout',
+        message:
+          'Превышено время ожидания ответа от сервера. Проверьте соединение и попробуйте снова',
+      };
     }
   } else if (error instanceof HttpError) {
-    return { type: 'http', message: error.message };
+    return {
+      type: 'http',
+      message: `Ошибка сервера (код ${error.status}). Попробуйте повторить запрос позже.`,
+    };
   }
 
   return {
     type: 'network',
-    message: error instanceof Error ? error.message : 'Неизвестная ошибка сети',
+    message:
+      error instanceof Error
+        ? 'Превышено время ожидания ответа от сервера. Проверьте соединение и попробуйте снова'
+        : 'Неизвестная ошибка сети',
   };
 }
